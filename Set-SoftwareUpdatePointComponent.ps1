@@ -1,19 +1,24 @@
 <#
 .SYNOPSIS
-  <Overview of script>
+  This Script will configure Software Update Point Component
 .DESCRIPTION
-  <Brief description of script>
+  Script will configure software update component after ConfigMgrLab Standard
 .PARAMETER <Parameter_Name>
-    <Brief description of parameter input required. Repeat this attribute if required>
+    Parameters Will tell to add patch classes
 .INPUTS
-  <Inputs if any, otherwise state None>
+  
 .OUTPUTS
-  <Outputs if any, otherwise state None - example: Log file stored in C:\Windows\Temp\<name>.log>
+  
 .NOTES
-  Version:        1.0
-  Author:         <Name>
-  Creation Date:  <Date>
-  Purpose/Change: Initial script development
+  Version:        1.2
+  Author:         Nicholai Kjærgaard
+  Creation Date:  02-05-2015
+  Purpose/Change:
+    1.2 - Windows 7 class added  
+
+    1.1 - Software Update Category added  
+
+    1.0 - Script Created
   
 .EXAMPLE
   <Example goes here. Repeat this attribute for more than one example>
@@ -53,6 +58,14 @@ function Set-SoftwareUpdatePointComponent (OptionalParameters) {
     # Get Software Update Category
     $SoftwareUpdateCategory = (Get-CMSoftwareUpdateCategory -TypeName UpdateClassification | Select-Object LocalizedCategoryInstanceName).LocalizedCategoryInstanceName
 
+    If ($Windows7Patches -eq $true)
+        {
+            $Windows7 = "Windows 7"
+        }
+    else {
+        $Windows7 = $null
+    }
+    
     # Configure Software Update Point Component
-    Set-CMSoftwareUpdatePointComponent -SiteCode $SCCMSiteCode -DefaultWsusServer $WSUSServer -SynchronizeAction SynchronizeFromMicrosoftUpdate -ReportingEvent CreateOnlyWsusStatusReportingEvents -AddUpdateClassification $SoftwareUpdateCategory -AddProductFamilies "Developer Tools, Runtimes, and Redistributables","Silverlight"
+    Set-CMSoftwareUpdatePointComponent -SiteCode $SCCMSiteCode -DefaultWsusServer $WSUSServer -SynchronizeAction SynchronizeFromMicrosoftUpdate -ReportingEvent CreateOnlyWsusStatusReportingEvents -AddUpdateClassification $SoftwareUpdateCategory -AddProductFamilies "Developer Tools, Runtimes, and Redistributables","Silverlight",$Windows7
 }
