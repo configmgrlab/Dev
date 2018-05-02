@@ -50,5 +50,9 @@ function Set-SoftwareUpdatePointComponent (OptionalParameters) {
     # Set Location 
     Set-Location $SCCMSiteCode":"
 
-    Set-CMSoftwareUpdatePointComponent -SiteCode $SCCMSiteCode -DefaultWsusServer $WSUSServer -SynchronizeAction SynchronizeFromMicrosoftUpdate -ReportingEvent CreateOnlyWsusStatusReportingEvents -AddUpdateClassification "" -AddProductFamilies "Developer Tools, Runtimes, and Redistributables","Silverlight"
+    # Get Software Update Category
+    $SoftwareUpdateCategory = (Get-CMSoftwareUpdateCategory -TypeName UpdateClassification | Select-Object LocalizedCategoryInstanceName).LocalizedCategoryInstanceName
+
+    # Configure Software Update Point Component
+    Set-CMSoftwareUpdatePointComponent -SiteCode $SCCMSiteCode -DefaultWsusServer $WSUSServer -SynchronizeAction SynchronizeFromMicrosoftUpdate -ReportingEvent CreateOnlyWsusStatusReportingEvents -AddUpdateClassification $SoftwareUpdateCategory -AddProductFamilies "Developer Tools, Runtimes, and Redistributables","Silverlight"
 }
