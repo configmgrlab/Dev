@@ -24,7 +24,7 @@
   <Example goes here. Repeat this attribute for more than one example>
 #>
 
-function Set-SoftwareUpdatePointComponent (OptionalParameters) {
+function Set-SoftwareUpdatePointComponent {
     
     param(
 
@@ -66,6 +66,13 @@ function Set-SoftwareUpdatePointComponent (OptionalParameters) {
         $Windows7 = $null
     }
     
+    if ($Windows8Patches -eq $true)
+        {
+            $Windows8 = "Windows 8"
+        }
+    else {
+            $Windows8 = $null        
+        }
     # Configure Software Update Point Component
-    Set-CMSoftwareUpdatePointComponent -SiteCode $SCCMSiteCode -DefaultWsusServer $WSUSServer -SynchronizeAction SynchronizeFromMicrosoftUpdate -ReportingEvent CreateOnlyWsusStatusReportingEvents -AddUpdateClassification $SoftwareUpdateCategory -AddProductFamilies "Developer Tools, Runtimes, and Redistributables","Silverlight",$Windows7
+    Set-CMSoftwareUpdatePointComponent -SiteCode $SCCMSiteCode -DefaultWsusServer $WSUSServer -SynchronizeAction SynchronizeFromMicrosoftUpdate -ReportingEvent CreateOnlyWsusStatusReportingEvents -AddUpdateClassification $SoftwareUpdateCategory -AddProductFamilies "Developer Tools, Runtimes, and Redistributables","Silverlight" -AddProduct $Windows7,$Windows8
 }
